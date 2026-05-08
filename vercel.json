@@ -1,0 +1,54 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/assets/(.*)",
+      "destination": "/legacy_build/assets/$1"
+    },
+    {
+      "source": "/ai-assistant.js",
+      "destination": "/legacy_build/ai-assistant.js"
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "/legacy_build/favicon.ico"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/legacy_build/robots.txt"
+    },
+    {
+      "source": "/lion-logo.png",
+      "destination": "/legacy_build/lion-logo.png"
+    },
+    {
+      "source": "/placeholder.svg",
+      "destination": "/legacy_build/placeholder.svg"
+    },
+    {
+      "source": "/logo.png",
+      "destination": "/legacy_build/logo.png"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/legacy_build/index.html"
+    }
+  ]
+}

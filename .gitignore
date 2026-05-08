@@ -1,0 +1,6 @@
+node_modules/
+railway-api/node_modules/
+.env
+railway-api/.env
+.vercel/
+.DS_Store
