@@ -19,6 +19,14 @@
   ],
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "https://for-the-fighters-production.up.railway.app/api/$1"
+    },
+    {
+      "source": "/health",
+      "destination": "https://for-the-fighters-production.up.railway.app/health"
+    },
+    {
       "source": "/assets/(.*)",
       "destination": "/legacy_build/assets/$1"
     },

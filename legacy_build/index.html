@@ -11,14 +11,24 @@
     <meta property="og:title" content="Lion Heart Fights - The Future of Combat Sports" />
     <meta property="og:description" content="AI-powered platform for fighters, coaches, and teams. Intelligent opponent analysis, training plans, contract management, and thriving community." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://.dev/opengraph-image-p98pqg.png" />
+    <meta property="og:image" content="/lion-logo.png" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Lion Heart Fights - The Future of Combat Sports" />
     <meta name="twitter:description" content="AI-powered platform for fighters, coaches, and teams. Intelligent opponent analysis, training plans, contract management, and thriving community." />
-    <meta name="twitter:image" content="https://.dev/opengraph-image-p98pqg.png" />
+    <meta name="twitter:image" content="/lion-logo.png" />
     <script>
-      window.LIONHEART_API_BASE_URL = "https://your-railway-service.up.railway.app";
+      (function () {
+        var fromQuery = new URLSearchParams(window.location.search).get("apiBaseUrl");
+        var fromStorage = window.localStorage.getItem("LIONHEART_API_BASE_URL");
+        var configured = fromQuery || fromStorage || "";
+
+        if (fromQuery) {
+          window.localStorage.setItem("LIONHEART_API_BASE_URL", fromQuery);
+        }
+
+        window.LIONHEART_API_BASE_URL = configured;
+      })();
     </script>
     <script type="module" crossorigin src="/assets/index-dlsmozsz.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-csv6hzhg.css">

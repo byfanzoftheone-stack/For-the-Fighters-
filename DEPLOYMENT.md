@@ -1,8 +1,17 @@
-# Lion Heart Fights Migration: Netlify Build -> Railway + Vercel
+# Lion Heart Fights Migration: Netlify -> Railway + Vercel
 
-This repo now contains:
+This repo contains:
 - `legacy_build/`: extracted static frontend build.
 - `railway-api/`: Node/Express API for Anthropic-powered AI endpoints.
+
+## 0) Netlify cutover checklist
+
+If this project was previously hosted on Netlify, do this before final cutover:
+
+1. Keep Netlify live until both Railway and Vercel are verified healthy.
+2. In Netlify, disable auto-publish for this repo to avoid split deployments.
+3. Move DNS to Vercel after successful Vercel + Railway smoke tests.
+4. Netlify config has been removed from this repo because production now runs on Vercel + Railway.
 
 ## 1) Railway backend deploy
 
@@ -12,7 +21,7 @@ This repo now contains:
    - `ANTHROPIC_API_KEY` = your key
    - `ANTHROPIC_MODEL` = `claude-3-5-sonnet-20241022` (or preferred model)
    - `MAX_TOKENS` = `900`
-   - `CORS_ORIGIN` = `https://your-vercel-project.vercel.app,http://localhost:4173`
+   - `CORS_ORIGIN` = `https://your-vercel-project.vercel.app,https://*.vercel.app,http://localhost:4173`
 4. Deploy. Confirm health endpoint works:
    - `https://<railway-domain>/health`
 
@@ -21,8 +30,9 @@ This repo now contains:
 1. Import this repo into Vercel.
 2. Keep root directory as repository root.
 3. `vercel.json` rewrites all traffic to `legacy_build/`.
-4. Edit `legacy_build/index.html` and set:
-   - `window.LIONHEART_API_BASE_URL` to your Railway HTTPS URL.
+4. Set the frontend API base URL to your Railway HTTPS URL using one of these methods:
+   - Default is already set to `https://for-the-fighters-production.up.railway.app` in `legacy_build/index.html`.
+   - Or open the app once with `?apiBaseUrl=https://your-service.up.railway.app` to persist it in browser storage.
 5. Deploy to production.
 
 ## 3) API endpoints now available
@@ -43,3 +53,10 @@ npm run dev
 ```
 
 Then set `window.LIONHEART_API_BASE_URL` in `legacy_build/index.html` to `http://localhost:8080` for local testing.
+
+## 5) Post-deploy smoke test
+
+1. Frontend loads at your Vercel domain.
+2. `GET https://<railway-domain>/health` returns `{ "ok": true, ... }`.
+3. AI widget appears and returns a response for a short test prompt.
+4. Browser network tab shows calls to your Railway domain (not Netlify).

@@ -1,10 +1,16 @@
 (function () {
-  const apiBaseUrl = window.LIONHEART_API_BASE_URL || "";
-
-  if (!apiBaseUrl) {
-    console.warn("LIONHEART_API_BASE_URL is not set; AI panel is disabled.");
-    return;
+  function normalizeApiBaseUrl(value) {
+    const raw = (value || "").toString().trim();
+    if (!raw) {
+      return "";
+    }
+    if (raw.includes("your-railway-service")) {
+      return "";
+    }
+    return raw.replace(/\/+$/, "");
   }
+
+  const apiBaseUrl = normalizeApiBaseUrl(window.LIONHEART_API_BASE_URL);
 
   const style = document.createElement("style");
   style.textContent = `
@@ -128,6 +134,7 @@
   }
 
   async function post(path, payload) {
+    const targetUrl = `${apiBaseUrl}${path}`;
     const response = await fetch(`${apiBaseUrl}${path}`, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -136,7 +143,7 @@
 
     if (!response.ok) {
       const text = await response.text();
-      throw new Error(text || `Request failed (${response.status})`);
+      throw new Error(text || `Request failed (${response.status}) for ${targetUrl}`);
     }
     return response.json();
   }

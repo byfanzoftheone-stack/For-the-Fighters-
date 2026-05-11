@@ -10,10 +10,32 @@ const corsOrigins = (process.env.CORS_ORIGIN || "")
   .map((origin) => origin.trim())
   .filter(Boolean);
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function originMatchesRule(origin, rule) {
+  if (rule === origin) {
+    return true;
+  }
+
+  if (!rule.includes("*")) {
+    return false;
+  }
+
+  const regex = new RegExp(`^${escapeRegExp(rule).replace(/\\\*/g, ".*")}$`);
+  return regex.test(origin);
+}
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || corsOrigins.length === 0 || corsOrigins.includes(origin)) {
+      const isAllowed =
+        !origin ||
+        corsOrigins.length === 0 ||
+        corsOrigins.some((rule) => originMatchesRule(origin, rule));
+
+      if (isAllowed) {
         callback(null, true);
         return;
       }
