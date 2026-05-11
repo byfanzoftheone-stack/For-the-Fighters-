@@ -21,16 +21,16 @@ If this project was previously hosted on Netlify, do this before final cutover:
    - `ANTHROPIC_API_KEY` = your key
    - `ANTHROPIC_MODEL` = `claude-3-5-sonnet-20241022` (or preferred model)
    - `MAX_TOKENS` = `900`
-   - `CORS_ORIGIN` = `https://your-vercel-project.vercel.app,https://*.vercel.app,http://localhost:4173`
+   - `CORS_ORIGIN` = `https://for-the-fighters.vercel.app,https://*.vercel.app,http://localhost:4173`
 4. Deploy. Confirm health endpoint works:
-   - `https://<railway-domain>/health`
+   - `https://for-the-fighters-production.up.railway.app/health`
 
 ## 2) Vercel frontend deploy
 
 1. Import this repo into Vercel.
 2. Keep root directory as repository root.
 3. Add Vercel env var:
-   - `RAILWAY_API_BASE_URL` = `https://<your-active-railway-domain>`
+   - `RAILWAY_API_BASE_URL` = `https://for-the-fighters-production.up.railway.app`
 4. `vercel.json` serves `legacy_build/` and rewrites `/health` to `/api/health`.
 5. `api/[...path].js` proxies all `/api/*` requests from Vercel to Railway using `RAILWAY_API_BASE_URL`.
 6. Deploy to production.
