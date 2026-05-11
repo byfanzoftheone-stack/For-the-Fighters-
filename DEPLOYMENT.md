@@ -29,11 +29,11 @@ If this project was previously hosted on Netlify, do this before final cutover:
 
 1. Import this repo into Vercel.
 2. Keep root directory as repository root.
-3. `vercel.json` rewrites all traffic to `legacy_build/`.
-4. Set the frontend API base URL to your Railway HTTPS URL using one of these methods:
-   - Default is already set to `https://for-the-fighters-production.up.railway.app` in `legacy_build/index.html`.
-   - Or open the app once with `?apiBaseUrl=https://your-service.up.railway.app` to persist it in browser storage.
-5. Deploy to production.
+3. Add Vercel env var:
+   - `RAILWAY_API_BASE_URL` = `https://<your-active-railway-domain>`
+4. `vercel.json` serves `legacy_build/` and rewrites `/health` to `/api/health`.
+5. `api/[...path].js` proxies all `/api/*` requests from Vercel to Railway using `RAILWAY_API_BASE_URL`.
+6. Deploy to production.
 
 ## 3) API endpoints now available
 
